@@ -1,5 +1,4 @@
 
-
 let pets = [];
 
 const moodOptions = [
@@ -30,17 +29,6 @@ function speciesFile(species) {
    return species.endsWith(".png") ? species : species + ".png";
 }
 
-
-function readFileAsDataURL(fileInput) {
-   return new Promise((resolve) => {
-      const file = fileInput.files[0];
-      if (!file) { resolve(""); return; }
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.readAsDataURL(file);
-   });
-}
-
 async function loadPets() {
    const res = await fetch("/api/pets");
    pets = await res.json();
@@ -52,8 +40,6 @@ if (document.getElementById("postList")) {
    const postList = document.getElementById("postList");
    const petSelect = document.getElementById("petSelect");
    const moodSelect = document.getElementById("moodSelect");
-   const postPhotoInput = document.getElementById("postPhotoInput");
-   const photoPreview = document.getElementById("photoPreview");
    const modal = document.getElementById("modalBackdrop");
    const composerAvatar = document.getElementById("composerAvatar");
    const modalAvatar = document.getElementById("modalAvatar");
@@ -114,18 +100,7 @@ if (document.getElementById("postList")) {
    document.getElementById("cancelModalBtn").onclick = () => {
       modal.classList.remove("open");
       postForm.reset();
-      photoPreview.style.display = "none";
    };
-
-   postPhotoInput.addEventListener("change", async () => {
-      const dataUrl = await readFileAsDataURL(postPhotoInput);
-      if (dataUrl) {
-         photoPreview.src = dataUrl;
-         photoPreview.style.display = "block";
-      } else {
-         photoPreview.style.display = "none";
-      }
-   });
 
    postForm.onsubmit = async function (e) {
       e.preventDefault();
@@ -142,7 +117,6 @@ if (document.getElementById("postList")) {
 
       await loadPosts();
       this.reset();
-      photoPreview.style.display = "none";
       modal.classList.remove("open");
    };
 
@@ -186,17 +160,11 @@ if (document.getElementById("petList")) {
                   </p>
                   <p class="pet-meta">${pet.breed || ""} · ${pet.age ?? "?"} yrs old · owner: ${pet.owner}</p>
                   <p class="pet-bio">${pet.bio || ""}</p>
-                  <button class="btn ghost small" onclick="deletePet(${pet.id})">Delete</button>
                </div>
             </div>
          `;
       });
    }
-
-   window.deletePet = async function (id) {
-      await fetch(`/api/pets/${id}`, { method: "DELETE" });
-      await loadAndShowPets();
-   };
 
    document.getElementById("openPetModalBtn").onclick = () => modal.classList.add("open");
    document.getElementById("cancelPetModalBtn").onclick = () => modal.classList.remove("open");
@@ -258,38 +226,11 @@ if (document.getElementById("requestList")) {
                <div class="post-body">
                   <p class="caption"><strong>${req.from_name}</strong> wants to be friends with <strong>${req.to_name}</strong></p>
                   <span class="mood-tag">${req.status}</span>
-                  <div class="post-actions">
-                     ${req.status === "Pending"
-                        ? `<button class="btn small" onclick="acceptRequest(${req.id})">Accept</button>
-                           <button class="btn ghost small" onclick="declineRequest(${req.id})">Decline</button>`
-                        : `<button class="btn ghost small" onclick="deleteRequest(${req.id})">Remove</button>`
-                     }
-                  </div>
                </div>
             </div>
          `;
       });
    }
-
-   // PATCH api/requests/:id <- { status: "Accepted" }
-   window.acceptRequest = async function (id) {
-      await fetch(`/api/requests/${id}`, {
-         method: "PATCH",
-         headers: { "Content-Type": "application/json" },
-         body: JSON.stringify({ status: "Accepted" })
-      });
-      await loadRequests();
-   };
-
-   // DELETE api/requests/:id
-   window.declineRequest = async function (id) {
-      await fetch(`/api/requests/${id}`, { method: "DELETE" });
-      await loadRequests();
-   };
-   window.deleteRequest = async function (id) {
-      await fetch(`/api/requests/${id}`, { method: "DELETE" });
-      await loadRequests();
-   };
 
    document.getElementById("openRequestModalBtn").onclick = () => modal.classList.add("open");
    document.getElementById("cancelRequestModalBtn").onclick = () => modal.classList.remove("open");
@@ -297,7 +238,6 @@ if (document.getElementById("requestList")) {
    document.getElementById("requestForm").onsubmit = async function (e) {
       e.preventDefault();
 
-      // POST api/requests <- { from_pet_id, to_pet_id }
       await fetch("/api/requests", {
          method: "POST",
          headers: { "Content-Type": "application/json" },
