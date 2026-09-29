@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Petly — Pet Profiles</title>
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="brand"><span class="brand-mark">🐾</span>Petly</div>
+            <nav>
+            <a class="nav-link" href="index.html">Feed</a>
+            <a class="nav-link active" href="profile.html">Pet Profiles</a>
+            <a class="nav-link" href="pet-request.html">Buddy Requests</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="wrap">
+        <section>
+            <div class="feed-head">
+            <div>
+                <h1>Pet Profiles</h1>
+                <p>Every pet on Petly, in one place</p>
+            </div>
+            <button class="btn" id="openPetModalBtn">+ Add Pet</button>
+            </div>
+
+            <div id="petList" class="pet-grid"></div>
+            <div id="emptyPetNote" class="empty-note" style="display:none;">No pets yet. Add the first one.</div>
+        </section>
+    </main>
+
+    <div class="modal-backdrop" id="petModalBackdrop">
+        <div class="modal">
+            <h2>Add Pet</h2>
+
+            <form id="petForm">
+            <input type="hidden" id="petEditId">
+
+            <div class="field">
+                <label for="petNameInput">Name</label>
+                <input type="text" id="petNameInput" required>
+            </div>
+
+            <div class="field">
+                <label for="petSpeciesInput">Species</label>
+                <select id="petSpeciesInput" required>
+                    <option value="dog.png">Dog</option>
+                    <option value="cat.png">Cat</option>
+                    <option value="rabbit.png">Rabbit</option>
+                    <option value="bird.png">Bird</option>
+                </select>
+                <img id="speciesPreview" src="assets/dog.png" alt="species preview" class="species-preview">
+            </div>
+
+            <div class="field">
+                <label for="petBreedInput">Breed</label>
+                <input type="text" id="petBreedInput">
+            </div>
+
+            <div class="field">
+                <label for="petAgeInput">Age</label>
+                <input type="number" id="petAgeInput" min="0">
+                </div>
+
+            <div class="field">
+                <label for="petBioInput">Bio</label>
+                <textarea id="petBioInput"></textarea>
+            </div>
+
+            <div class="field">
+                <label for="petOwnerInput">Owner</label>
+                <input type="text" id="petOwnerInput" required>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn ghost" id="cancelPetModalBtn">Cancel</button>
+                <button type="submit" class="btn">Save Pet</button>
+            </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

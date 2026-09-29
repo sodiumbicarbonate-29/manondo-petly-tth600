@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Petly — Buddy Requests</title>
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="brand"><span class="brand-mark">🐾</span>Petly</div>
+            <nav>
+            <a class="nav-link" href="index.html">Feed</a>
+            <a class="nav-link" href="profile.html">Pet Profiles</a>
+            <a class="nav-link active" href="pet-request.html">Buddy Requests</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="wrap">
+        <section>
+            <div class="feed-head">
+            <div>
+                <h1>Buddy Requests</h1>
+                <p>Make new friends for your pets</p>
+            </div>
+            <button class="btn" id="openRequestModalBtn">+ Send Request</button>
+            </div>
+
+            <div id="requestList"></div>
+            <div id="emptyRequestNote" class="empty-note" style="display:none;">No buddy requests yet.</div>
+        </section>
+    </main>
+
+    <div class="modal-backdrop" id="requestModalBackdrop">
+    <div class="modal">
+        <h2>Send Buddy Request</h2>
+
+        <form id="requestForm">
+            <div class="field">
+                <label for="fromPetSelect">From</label>
+                <select id="fromPetSelect" required></select>
+            </div>
+
+            <div class="field">
+                <label for="toPetSelect">To</label>
+                <select id="toPetSelect" required></select>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn ghost" id="cancelRequestModalBtn">Cancel</button>
+                <button type="submit" class="btn">Send</button>
+            </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

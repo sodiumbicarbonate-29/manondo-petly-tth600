@@ -1,0 +1,448 @@
+:root {
+   --sun: #FFC93C;
+   --sky: #4EA8DE;
+   --grass: #5FAD56;
+   --coral: #FF6B6B;
+   --bg: #FFFDF6;
+   --ink: #1B1B3A;
+   --ink-soft: #5A5A78;
+}
+
+* {
+   box-sizing: border-box;
+}
+
+body {
+   margin: 0;
+   background: var(--bg);
+   background-attachment: fixed;
+   color: var(--ink);
+   font-family: 'Inter', sans-serif;
+}
+
+h1, h2, h3, .brand, .btn, .nav-link {
+   font-family: 'Baloo 2', sans-serif;
+}
+
+/* ---------- Topbar / nav ---------- */
+.topbar {
+   background: var(--bg);
+   border-bottom: 1.5px solid var(--ink);
+   position: sticky;
+   top: 0;
+}
+.topbar-inner {
+   max-width: 1040px;
+   margin: 0 auto;
+   padding: 14px 20px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 16px;
+}
+.brand {
+   font-size: 1.6rem;
+   font-weight: 800;
+   display: flex;
+   align-items: center;
+   gap: 8px;
+}
+.brand-mark {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   width: 34px;
+   height: 34px;
+   background: var(--sun);
+   border-radius: 9px;
+}
+nav {
+   display: flex;
+   gap: 6px;
+}
+.nav-link {
+   font-weight: 600;
+   padding: 8px 14px;
+   border-radius: 8px;
+   text-decoration: none;
+   color: var(--ink);
+}
+.nav-link.active {
+   background: var(--sky);
+}
+.nav-link:not(.active):hover {
+   background: rgba(27, 27, 58, 0.08);
+}
+
+/* ---------- Layout ---------- */
+.wrap {
+   max-width: 1040px;
+   margin: 0 auto;
+   padding: 28px 20px 80px;
+}
+.feed-head {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   margin-bottom: 16px;
+   gap: 12px;
+   flex-wrap: wrap;
+}
+.feed-head h1 {
+   margin: 0;
+   font-size: 1.7rem;
+}
+.feed-head p {
+   margin: 4px 0 0;
+   color: var(--ink-soft);
+   font-size: 0.92rem;
+}
+
+/* ---------- Buttons — flat, no shadow ---------- */
+.btn {
+   font-weight: 700;
+   border: none;
+   border-radius: 8px;
+   padding: 10px 18px;
+   background: var(--coral);
+   color: var(--bg);
+   cursor: pointer;
+}
+.btn:hover {
+   background: #e85555;
+}
+.btn.ghost {
+   background: transparent;
+   color: var(--ink);
+   border: 1.5px solid var(--ink);
+}
+.btn.ghost:hover {
+   background: var(--ink);
+   color: var(--bg);
+}
+.btn.small {
+   padding: 6px 12px;
+   font-size: 0.82rem;
+}
+
+/* ---------- Composer trigger bar on the Feed page ---------- */
+.composer-bar {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+   background: var(--bg);
+   border: 1.5px solid var(--ink);
+   border-radius: 24px;
+   padding: 10px 16px;
+   margin-bottom: 20px;
+   cursor: pointer;
+}
+.composer-avatar {
+   width: 40px;
+   height: 40px;
+   border-radius: 50%;
+   object-fit: cover;
+   border: 1.5px solid var(--ink);
+   flex-shrink: 0;
+}
+.composer-input {
+   flex: 1;
+   background: rgba(27, 27, 58, 0.05);
+   border-radius: 20px;
+   padding: 10px 16px;
+   color: var(--ink-soft);
+   font-size: 0.92rem;
+}
+.composer-bar:hover .composer-input {
+   background: rgba(27, 27, 58, 0.09);
+}
+
+/* ---------- Composer modal (Create Post) ---------- */
+.composer-modal {
+   max-width: 480px;
+}
+.composer-who {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   margin: 14px 0;
+}
+.composer-who select {
+   border: none;
+   background: rgba(27, 27, 58, 0.06);
+   border-radius: 8px;
+   padding: 6px 10px;
+   font-weight: 600;
+   font-family: 'Inter', sans-serif;
+}
+.composer-textarea {
+   width: 100%;
+   min-height: 110px;
+   border: none;
+   resize: none;
+   font-family: 'Inter', sans-serif;
+   font-size: 1.05rem;
+   outline: none;
+   background: transparent;
+   color: var(--ink);
+}
+.composer-preview {
+   width: 100%;
+   max-height: 280px;
+   object-fit: cover;
+   border-radius: 10px;
+   margin: 10px 0;
+}
+.composer-actions-row {
+   border-top: 1.5px solid var(--ink);
+   border-bottom: 1.5px solid var(--ink);
+   padding: 10px 0;
+   margin: 10px 0 16px;
+}
+.composer-add-photo {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   font-weight: 600;
+   font-size: 0.9rem;
+   cursor: pointer;
+   padding: 6px 10px;
+   border-radius: 8px;
+}
+.composer-add-photo:hover {
+   background: rgba(27, 27, 58, 0.06);
+}
+.post-btn {
+   width: 100%;
+}
+
+/* ---------- Post cards (feed) — flat ---------- */
+.post {
+   background: var(--bg);
+   border: 1.5px solid var(--ink);
+   border-radius: 12px;
+   margin-bottom: 16px;
+   overflow: hidden;
+}
+.post-head {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   padding: 14px 16px 10px;
+}
+.post-who .name {
+   font-weight: 700;
+   font-size: 0.98rem;
+}
+.post-who .meta {
+   font-size: 0.78rem;
+   color: var(--ink-soft);
+}
+.post-body {
+   padding: 0 16px 16px;
+}
+.caption {
+   margin: 0 0 12px;
+   font-size: 0.96rem;
+   line-height: 1.5;
+}
+.post-actions {
+   display: flex;
+   align-items: center;
+   gap: 14px;
+}
+.like-btn {
+   display: flex;
+   align-items: center;
+   gap: 7px;
+   border: 1.5px solid var(--ink);
+   border-radius: 20px;
+   padding: 6px 14px;
+   background: transparent;
+   font-weight: 700;
+   font-size: 0.88rem;
+   cursor: pointer;
+}
+.like-btn.liked {
+   background: var(--sun);
+   border-color: var(--ink);
+}
+.post-photo {
+   width: 100%;
+   max-height: 320px;
+   object-fit: cover;
+   display: block;
+   margin: 10px 0;
+   border-radius: 8px;
+}
+
+/* ---------- Pet profile cards — flat ---------- */
+.pet-card {
+   background: var(--bg);
+   border: 1.5px solid var(--ink);
+   border-radius: 12px;
+   margin-bottom: 16px;
+   overflow: hidden;
+}
+.pet-card-body {
+   padding: 14px 16px;
+}
+.pet-meta {
+   color: var(--ink-soft);
+   font-size: 0.85rem;
+   margin: 4px 0;
+}
+.pet-bio {
+   font-size: 0.92rem;
+   margin: 8px 0;
+}
+.pet-card-actions {
+   display: flex;
+   gap: 8px;
+   margin-top: 10px;
+}
+.pet-species {
+   display: flex;
+   align-items: center;
+   gap: 6px;
+   font-size: 0.88rem;
+   font-weight: 600;
+   margin: 4px 0;
+   color: var(--ink-soft);
+}
+.species-icon {
+   width: 20px;
+   height: 20px;
+   object-fit: cover;
+   border-radius: 5px;
+}
+
+/* ---------- Images ---------- */
+.avatar {
+   width: 42px;
+   height: 42px;
+   border-radius: 50%;
+   object-fit: cover;
+   border: 1.5px solid var(--ink);
+}
+.pet-photo {
+   width: 100%;
+   height: 180px;
+   object-fit: cover;
+   border-bottom: 1.5px solid var(--ink);
+}
+.row-avatar {
+   width: 28px;
+   height: 28px;
+   border-radius: 50%;
+   object-fit: cover;
+   vertical-align: middle;
+   margin-right: 6px;
+}
+#speciesPreview {
+   width: 36px;
+   height: 36px;
+   object-fit: cover;
+   border-radius: 8px;
+   border: 1.5px solid var(--ink);
+   margin-top: 8px;
+   display: block;
+}
+
+/* ---------- Modal — flat ---------- */
+.modal-backdrop {
+   position: fixed;
+   inset: 0;
+   background: rgba(27, 27, 58, 0.45);
+   display: none;
+   align-items: center;
+   justify-content: center;
+   padding: 20px;
+}
+.modal-backdrop.open {
+   display: flex;
+}
+.modal {
+   background: var(--bg);
+   border: 1.5px solid var(--ink);
+   border-radius: 14px;
+   width: 100%;
+   max-width: 420px;
+   padding: 22px;
+}
+.modal h2 {
+   margin: 0 0 4px;
+   font-size: 1.3rem;
+}
+.modal .sub {
+   margin: 0 0 18px;
+   color: var(--ink-soft);
+   font-size: 0.88rem;
+}
+.field {
+   margin-bottom: 14px;
+}
+.field label {
+   display: block;
+   font-weight: 600;
+   font-size: 0.85rem;
+   margin-bottom: 5px;
+}
+.field select, .field textarea, .field input {
+   width: 100%;
+   font-family: 'Inter', sans-serif;
+   font-size: 0.92rem;
+   padding: 9px 11px;
+   border: 1.5px solid var(--ink);
+   border-radius: 8px;
+   background: var(--bg);
+   color: var(--ink);
+}
+.field textarea {
+   min-height: 70px;
+   resize: vertical;
+}
+.modal-actions {
+   display: flex;
+   gap: 10px;
+   margin-top: 6px;
+}
+
+/* ---------- Post table (posts.html, if used) ---------- */
+.post-table {
+   width: 100%;
+   border-collapse: collapse;
+   background: var(--bg);
+}
+.post-table th, .post-table td {
+   text-align: left;
+   padding: 10px 12px;
+   border-bottom: 1.5px solid var(--ink);
+   font-size: 0.9rem;
+}
+.post-table th {
+   font-family: 'Baloo 2', sans-serif;
+   font-weight: 700;
+}
+
+/* ---------- Buddy requests ---------- */
+.mood-tag {
+   display: inline-block;
+   font-size: 0.78rem;
+   font-weight: 600;
+   padding: 4px 10px;
+   border-radius: 20px;
+   border: 1.5px solid var(--ink);
+   color: var(--ink-soft);
+   margin-bottom: 10px;
+}
+
+/* ---------- Empty state ---------- */
+.empty-note {
+   text-align: center;
+   color: var(--ink-soft);
+   font-size: 0.88rem;
+   padding: 30px 10px;
+   border: 1.5px dashed var(--ink);
+   border-radius: 12px;
+}
