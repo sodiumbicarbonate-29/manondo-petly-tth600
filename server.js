@@ -4,22 +4,9 @@ const mysql = require("mysql2");
 const app = express();
 const PORT = 3000;
 
-/*
-
-npm init -y
-npm install express mysql2
-
-*/
-
-// Allow JSON data
 app.use(express.json());
-
-
-// Serve index.html
 app.use(express.static(__dirname));
 
-
-// Connect to MySQL
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -27,235 +14,199 @@ const db = mysql.createConnection({
     database: "petly_db"
 });
 
-
 db.connect((err) => {
-
-    if (err) {
-        console.error("Database connection failed:", err);
-        return;
-    }
-
+    if (err) { console.error("Database connection failed:", err); return; }
     console.log("Connected to MySQL");
-
 });
 
-
 // ========================================
-// GET - Retrieve Pets
+// VETS
 // ========================================
 
-app.get("/api/pets", (req, res) => {
-    const sql = "SELECT * FROM pets";
+// GET - Retrieve all vets
+app.get("/api/vets", (req, res) => {
+    db.query("SELECT * FROM vets ORDER BY name", (err, results) => {
+        if (err) return res.status(500).json({ 
+            message: "Database error"
+        });
+        res.json(results);
+    });
+});
 
-    db.query(sql, (err, results) => {
-
-        if (err) {
-            return res.status(500).json({
-                message: "Database error"
+// POST - Add a vet
+app.post("/api/vets", (req, res) => {
+    const { name, specialization, phone, email } = req.body;
+    db.query(
+        "INSERT INTO vets (name, specialization, phone, email) VALUES (?, ?, ?, ?)",
+        [name, specialization, phone, email],
+        (err, result) => {
+            if (err) return res.status(500).json({ 
+                message: "Database error" 
+            });
+            res.status(201).json({ 
+                message: "Vet added", id: result.insertId 
             });
         }
-
-        res.json(results);
-
-    });
-
+    );
 });
 
-
-
-// ========================================
-// POST - Insert Pet
-// ========================================
-
-app.post("/api/pets", (req, res) => {
-    const name = req.body.name;
-    const species = req.body.species;
-    const breed = req.body.breed;
-    const age = req.body.age;
-    const bio = req.body.bio;
-    const owner = req.body.owner;
-
-    const sql = `
-        INSERT INTO pets
-        (name, species, breed, age, bio, owner)
-        VALUES (?, ?, ?, ?, ?, ?)
-    `;
-
+// PUT - Update a vet
+app.put("/api/vets/:id", (req, res) => {
+    const { name, specialization, phone, email } = req.body;
     db.query(
-        sql,
+        "UPDATE vets SET name=?, specialization=?, phone=?, email=? WHERE id=?",
+        [name, specialization, phone, email, req.params.id],
+        (err) => {
+            if (err) return res.status(500).json({ 
+                message: "Database error" 
+            });
+            res.json({ 
+                message: "Vet updated" 
+            });
+        }
+    );
+});
+
+// DELETE - Remove a vet
+app.delete("/api/vets/:id", (req, res) => {
+    db.query("DELETE FROM vets WHERE id=?", [req.params.id], (err) => {
+        if (err) return res.status(500).json({ 
+            message: "Database error" 
+        });
+        res.json({ 
+            message: "Vet deleted" 
+        });
+    });
+});
+
+// ========================================
+// PATIENTS
+// ========================================
+
+// GET - Retrieve all patients
+app.get("/api/pets", (req, res) => {
+    db.query("SELECT * FROM pets ORDER BY name", (err, results) => {
+        if (err) return res.status(500).json({ 
+            message: "Database error" 
+        });
+        res.json(results);
+    });
+});
+
+// POST - Add a patient
+app.post("/api/pets", (req, res) => {
+    const { name, species, breed, age, bio, owner } = req.body;
+    db.query(
+        "INSERT INTO pets (name, species, breed, age, bio, owner) VALUES (?, ?, ?, ?, ?, ?)",
         [name, species, breed, age, bio, owner],
         (err, result) => {
-
-            if (err) {
-                return res.status(500).json({
-                    message: "Database error"
-                });
-            }
-
-
-            res.status(201).json({
-                message: "Pet added successfully",
-                id: result.insertId
+            if (err) return res.status(500).json({ 
+                message: "Database error" 
             });
-
+            res.status(201).json({ 
+                message: "Patient added", id: result.insertId 
+            });
         }
     );
-
 });
 
-// ========================================
-// DELETE - Remove Pet
-// ========================================
-
-
-// ========================================
-// GET - Retrieve Posts
-// ========================================
-
-app.get("/api/posts", (req, res) => {
-
-    const sql = `
-        SELECT posts.*, pets.name AS pet_name, pets.species AS pet_species
-        FROM posts
-        JOIN pets ON posts.pet_id = pets.id
-        ORDER BY posts.created_at DESC
-    `;
-
-    db.query(sql, (err, results) => {
-
-        if (err) {
-            return res.status(500).json({
-                message: "Database error"
-            });
-        }
-
-        res.json(results);
-
-    });
-
-});
-
-
-// ========================================
-// POST - Insert Post
-// ========================================
-app.post("/api/posts", (req, res) => {
-
-    const pet_id = req.body.pet_id;
-    const caption = req.body.caption;
-    const mood = req.body.mood;
-
-    const sql = `
-        INSERT INTO posts
-        (pet_id, caption, mood)
-        VALUES (?, ?, ?)
-    `;
-
+// PUT - Update a patient
+app.put("/api/pets/:id", (req, res) => {
+    const { name, species, breed, age, bio, owner } = req.body;
     db.query(
-        sql,
-        [pet_id, caption, mood],
-        (err, result) => {
-
-            if (err) {
-                return res.status(500).json({
-                    message: "Database error"
-                });
-            }
-
-            res.status(201).json({
-                message: "Post added successfully",
-                id: result.insertId
+        "UPDATE pets SET name=?, species=?, breed=?, age=?, bio=?, owner=? WHERE id=?",
+        [name, species, breed, age, bio, owner, req.params.id],
+        (err) => {
+            if (err) return res.status(500).json({ 
+                message: "Database error" 
+            });
+            res.json({ 
+                message: "Patient updated" 
             });
         }
     );
-
 });
-// ========================================
-// DELETE - Remove Post
-// ========================================
 
-// ========================================
-// GET - Retrieve Buddy Requests (joined with both pet names)
-// ========================================
-app.get("/api/requests", (req, res) => {
-
-    const sql = `
-        SELECT
-            buddy_requests.*,
-            fromPet.name AS from_name,
-            toPet.name AS to_name
-        FROM buddy_requests
-        JOIN pets AS fromPet ON buddy_requests.from_pet_id = fromPet.id
-        JOIN pets AS toPet ON buddy_requests.to_pet_id = toPet.id
-        ORDER BY buddy_requests.created_at DESC
-    `;
-
-    db.query(sql, (err, results) => {
-
-        if (err) {
-            return res.status(500).json({
-                message: "Database error"
-            });
-        }
-
-        res.json(results);
-
+// DELETE - Remove a patient
+app.delete("/api/pets/:id", (req, res) => {
+    db.query("DELETE FROM pets WHERE id=?", [req.params.id], (err) => {
+        if (err) return res.status(500).json({ 
+            message: "Database error" 
+        });
+        res.json({ 
+            message: "Patient deleted" 
+        });
     });
-
 });
 
-
 // ========================================
-// POST - Insert Buddy Request
+// APPOINTMENTS
 // ========================================
 
-app.post("/api/requests", (req, res) => {
-
-    const from_pet_id = req.body.from_pet_id;
-    const to_pet_id = req.body.to_pet_id;
-
+// GET - Retrieve all appointments
+app.get("/api/appointments", (req, res) => {
     const sql = `
-        INSERT INTO buddy_requests
-        (from_pet_id, to_pet_id)
-        VALUES (?, ?)
+        SELECT appointments.*, pets.name AS pet_name, pets.species AS pet_species, pets.owner AS pet_owner
+        FROM appointments
+        JOIN pets ON appointments.pet_id = pets.id
+        ORDER BY appointments.date DESC
     `;
+    db.query(sql, (err, results) => {
+        if (err) return res.status(500).json({ 
+            message: "Database error" 
+        });
+        res.json(results);
+    });
+});
 
+// POST - Add an appointment
+app.post("/api/appointments", (req, res) => {
+    const { pet_id, date, reason, notes, status } = req.body;
     db.query(
-        sql,
-        [from_pet_id, to_pet_id],
+        "INSERT INTO appointments (pet_id, date, reason, notes, status) VALUES (?, ?, ?, ?, ?)",
+        [pet_id, date, reason, notes || null, status || "Scheduled"],
         (err, result) => {
-
-            if (err) {
-                return res.status(500).json({
-                    message: "Database error"
-                });
-            }
-
-            res.status(201).json({
-                message: "Request sent successfully",
-                id: result.insertId
+            if (err) return res.status(500).json({ 
+                message: "Database error" 
             });
-
+            res.status(201).json({ 
+                message: "Appointment created", id: result.insertId 
+            });
         }
     );
-
 });
 
+// PUT - Update an appointment
+app.put("/api/appointments/:id", (req, res) => {
+    const { date, reason, notes, status } = req.body;
+    db.query(
+        "UPDATE appointments SET date=?, reason=?, notes=?, status=? WHERE id=?",
+        [date, reason, notes || null, status, req.params.id],
+        (err) => {
+            if (err) return res.status(500).json({ 
+                message: "Database error" });
+            res.json({ 
+                message: "Appointment updated" 
+            });
+        }
+    );
+});
 
-
-// ========================================
-// DELETE - Remove Buddy Request (Decline / Remove)
-// ========================================
-
+// DELETE - Remove an appointment
+app.delete("/api/appointments/:id", (req, res) => {
+    db.query("DELETE FROM appointments WHERE id=?", [req.params.id], (err) => {
+        if (err) return res.status(500).json({ 
+            message: "Database error" });
+        res.json({ 
+            message: "Appointment deleted" 
+        });
+    });
+});
 
 // ========================================
 // Start Server
 // ========================================
 
 app.listen(PORT, () => {
-
-    console.log(
-        `Server running at http://localhost:${PORT}`
-    );
-
+    console.log(`Server running at http://localhost:${PORT}`);
 });

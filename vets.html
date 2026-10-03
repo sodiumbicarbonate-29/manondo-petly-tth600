@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="style.css">
+   <title>Petly — Vets</title>
+</head>
+<body>
+   <header class="topbar">
+      <div class="topbar-inner">
+         <div class="brand"><span class="brand-mark">🐾</span>Petly</div>
+         <nav>
+            <a class="nav-link" href="appointments.html">Appointments</a>
+            <a class="nav-link" href="index.html">Patients</a>
+            <a class="nav-link active" href="vets.html">Vets</a>
+         </nav>
+      </div>
+   </header>
+
+   <main class="wrap">
+      <div class="page-head">
+         <div>
+            <h1>Vets</h1>
+         </div>
+         <button class="btn" id="openVetModalBtn">+ Add Vet</button>
+      </div>
+
+      <div class="search-bar">
+         <input type="text" id="vetSearch" placeholder="Search by name or specialization...">
+      </div>
+      </div>
+
+      <div id="vetList"></div>
+      <div id="emptyVetNote" class="empty-note" style="display:none;">No vets yet.</div>
+   </main>
+
+   <div class="modal-backdrop" id="vetModalBackdrop">
+      <div class="modal" style="position:relative;">
+         <h2 id="vetModalTitle">Add Vet</h2>
+         <button type="button" id="cancelVetModalBtn" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:1.2rem;cursor:pointer;">&#x2715;</button>
+         <form id="vetForm">
+            <input type="hidden" id="vetEditId">
+            <div class="field"><label>Full Name</label><input type="text" id="vetNameInput" required></div>
+            <div class="field"><label>Specialization</label><input type="text" id="vetSpecInput"></div>
+            <div class="field"><label>Phone</label><input type="text" id="vetPhoneInput"></div>
+            <div class="field"><label>Email</label><input type="email" id="vetEmailInput"></div>
+            <div class="modal-actions"><button type="submit" class="btn">Save Vet</button></div>
+         </form>
+      </div>
+   </div>
+
+   <script src="script.js"></script>
+</body>
+</html>
